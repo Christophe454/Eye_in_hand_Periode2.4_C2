@@ -12,6 +12,25 @@ Voor het maken van de ROS2 Universal Robots template maak je gebruik van een Git
 
 > we maken gebruik van een prefix my_ur in de packages van de repository om onderscheid te maken met de standaard Universal Robots packages.
 
+::::{card} 
+
+:::{tab-set}
+
+::{tab-item} Met GIT-repository support
+
+text 1
+
+::
+
+::{tab-item} Zonder GIT-repository support
+
+text 2
+
+::
+
+:::
+
+::::
 
 
 ## Installatie van Universal Robot support packages
