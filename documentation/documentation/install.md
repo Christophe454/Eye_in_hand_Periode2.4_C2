@@ -20,7 +20,7 @@ Voor het maken van de ROS2 Universal Robots template maak je gebruik van een Git
 
 * Maak een account aan bij [Github](https://github.com/) en login op dit account
 
-* Open de [ROS2_Industrial](https://github.com/AvansMechatronica/ROS2_industrial) repository
+* Open de [my_ur_ROS2](https://github.com/AvansMechatronica/my_ur_ROS2) repository
 
 * Maak een Fork van de repository naar je eigen Github account door op het **Fork icoon**  te klikken:
 
@@ -31,12 +31,12 @@ Voor het maken van de ROS2 Universal Robots template maak je gebruik van een Git
 * Nu kun je de workspace als volgt creëren
 
 ```bash
-mkdir -p ~/ros2_industrial_ws/src
-cd ~/ros2_industrial_ws/src
-git clone https://github.com/<jouw_account_naam>/ROS2_industrial.git
+mkdir -p ~/my_ur_ws/src
+cd ~/my_ur_ws/src
+git clone https://github.com/<jouw_account_naam>/my_ur_ROS2.git
 ```
 
-*ps. Het gebruik van github (zoals add, commit & push commando's) valt  buiten de scope van deze workshop*
+*ps. Het gebruik van github (zoals add, commit & push commando's) valt  buiten de scope van deze documentatie*
 
 :::
 
@@ -44,9 +44,9 @@ git clone https://github.com/<jouw_account_naam>/ROS2_industrial.git
 
 * Je kunt de workspace als volgt creëren
 ```bash
-mkdir -p ~/ros2_industrial_ws/src
-cd ~/ros2_industrial_ws/src
-git clone https://github.com/AvansMechatronica/ROS2_industrial.git
+mkdir -p ~/my_ur_ws/src
+cd ~/my_ur_ws/src
+git clone https://github.com/AvansMechatronica/my_ur_ROS2.git
 ```
 
 :::
