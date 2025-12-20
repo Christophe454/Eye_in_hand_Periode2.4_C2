@@ -18,8 +18,12 @@ Welkom bij de Universal Robot Template Repository
 
    documentation/overview.md
    documentation/install.md
-   documentation/gazebo.md
-
+   documentation/setup_assistant.md
+   documentation/simulation.md
+   documentation/demo_programms.md
+   documentation/real_robot.md
+   documentation/teachbot.md
+   documentation/troubleshooting.md
 
 
 # License

@@ -1,1 +1,0 @@
-# Simulatie met Gazebo
