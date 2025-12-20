@@ -10,6 +10,7 @@ import rclpy
 from rclpy.node import Node
 from rclpy.action import ActionClient
 from sensor_msgs.msg import JointState
+from std_msgs.msg import Bool
 from control_msgs.action import FollowJointTrajectory
 from trajectory_msgs.msg import JointTrajectory, JointTrajectoryPoint
 from builtin_interfaces.msg import Duration
@@ -24,6 +25,7 @@ class URTeachBotFollowerAction(Node):
         
         # Declare parameters
         self.declare_parameter('teachbot_topic', '/teachbot/joint_states')
+        self.declare_parameter('enable_topic', '/teachbot/enable')
         self.declare_parameter('controller_name', 'scaled_joint_trajectory_controller')
         self.declare_parameter('update_rate', 0.5)  # seconds between updates
         self.declare_parameter('position_tolerance', 0.01)  # radians
@@ -31,6 +33,7 @@ class URTeachBotFollowerAction(Node):
         
         # Get parameters
         teachbot_topic = self.get_parameter('teachbot_topic').value
+        enable_topic = self.get_parameter('enable_topic').value
         controller_name = self.get_parameter('controller_name').value
         self.update_rate = self.get_parameter('update_rate').value
         self.position_tolerance = self.get_parameter('position_tolerance').value
@@ -40,6 +43,7 @@ class URTeachBotFollowerAction(Node):
         self.latest_joint_states = None
         self.current_robot_state = None  # Current robot joint positions
         self.last_commanded_positions = None
+        self.enabled = False  # Enable/disable flag
         self.lock = threading.Lock()
         self.is_executing = False
         
@@ -66,10 +70,19 @@ class URTeachBotFollowerAction(Node):
             10
         )
         
+        # Subscribe to enable topic
+        self.enable_subscription = self.create_subscription(
+            Bool,
+            enable_topic,
+            self.enable_callback,
+            10
+        )
+        
         # Create a timer to periodically send commands
         self.timer = self.create_timer(self.update_rate, self.update_robot_position)
         
         self.get_logger().info(f'Subscribed to {teachbot_topic}')
+        self.get_logger().info(f'Subscribed to {enable_topic}')
         self.get_logger().info(f'Action client: /{controller_name}/follow_joint_trajectory')
         self.get_logger().info(f'Update rate: {self.update_rate} seconds')
         self.get_logger().info('Waiting for action server...')
@@ -88,8 +101,22 @@ class URTeachBotFollowerAction(Node):
         with self.lock:
             self.current_robot_state = msg
     
+    def enable_callback(self, msg):
+        """Handle enable/disable messages."""
+        was_enabled = self.enabled
+        self.enabled = msg.data
+        
+        if self.enabled and not was_enabled:
+            self.get_logger().info('TeachBot following ENABLED')
+        elif not self.enabled and was_enabled:
+            self.get_logger().info('TeachBot following DISABLED')
+    
     def update_robot_position(self):
         """Periodically update the robot position based on teachbot input."""
+        # Check if enabled
+        if not self.enabled:
+            return
+        
         # Don't send new commands while executing
         if self.is_executing:
             return

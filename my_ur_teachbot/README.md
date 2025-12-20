@@ -4,49 +4,77 @@ This package contains ROS2 nodes that allow a UR robot to follow joint positions
 
 ## Overview
 
-The teachbot device publishes joint states on `/teachbot/joint_states`, and these nodes command the UR robot to move to match those positions using MoveIt.
+The teachbot device publishes joint states on `/teachbot/joint_states`, and these nodes command the UR robot to move to match those positions.
+
+## Quick Start
+
+### Launch with GUI Control (Recommended)
+```bash
+ros2 launch my_ur_teachbot teachbot_follower.launch.py
+```
+
+This starts:
+- TeachBot follower action client
+- Enable/Disable GUI for easy control
+
+### Launch without GUI
+```bash
+ros2 launch my_ur_teachbot teachbot_follower_simple.launch.py
+```
+
+Then manually enable via command line:
+```bash
+ros2 topic pub /teachbot/enable std_msgs/msg/Bool "data: true"
+```
 
 ## Available Nodes
 
-### 1. `ur_teachbot_commander` ⭐ **RECOMMENDED - Simplest & Works**
+### 1. `teachbot_follower_action` ✅ **RECOMMENDED - Action Client**
 
-This node directly publishes trajectory commands to the robot controller. It's the simplest and most direct approach.
+This node uses action client to send trajectory goals. Robust with feedback and result handling.
 
 **Usage:**
 ```bash
-ros2 run my_ur_teachbot ur_teachbot_commander
+ros2 run my_ur_teachbot teachbot_follower_action
 ```
 
 **Parameters:**
 - `teachbot_topic` (default: `/teachbot/joint_states`) - Topic to subscribe to for teachbot commands
+- `enable_topic` (default: `/teachbot/enable`) - Topic for enable/disable control
 - `controller_name` (default: `scaled_joint_trajectory_controller`) - Name of the joint trajectory controller
 - `update_rate` (default: `0.5`) - Seconds between updates
 - `position_tolerance` (default: `0.01`) - Minimum position change (radians) to trigger movement
-- `trajectory_duration` (default: `0.5`) - Duration for each trajectory segment
+- `trajectory_duration` (default: `2.0`) - Duration for each trajectory segment
 
-**Example with custom parameters:**
-```bash
-ros2 run my_ur_teachbot ur_teachbot_commander --ros-args \
-  -p teachbot_topic:=/my_teachbot/joint_states \
-  -p update_rate:=0.2 \
-  -p trajectory_duration:=0.3
-```
+### 2. `teachbot_follower_moveit_commander` 📝 **Alternative - Direct Commands**
 
-### 2. `ur_teachbot_action` ✅ **Action Client - Robust**
-
-This node uses action client to send trajectory goals. More robust with feedback and result handling.
+This node directly publishes trajectory commands to the robot controller.
 
 **Usage:**
 ```bash
-ros2 run my_ur_teachbot ur_teachbot_action
+ros2 run my_ur_teachbot teachbot_follower_moveit_commander
 ```
 
 **Parameters:**
 - `teachbot_topic` (default: `/teachbot/joint_states`)
+- `enable_topic` (default: `/teachbot/enable`)
 - `controller_name` (default: `scaled_joint_trajectory_controller`)
 - `update_rate` (default: `0.5`)
 - `position_tolerance` (default: `0.01`)
 - `trajectory_duration` (default: `0.5`)
+
+### 3. `teachbot_enable_gui` 🎛️ **Enable/Disable GUI**
+
+Provides a simple GUI with ON/OFF button to enable/disable teachbot following.
+
+**Usage:**
+```bash
+ros2 run my_ur_teachbot teachbot_enable_gui
+```
+
+**Parameters:**
+- `enable_topic` (default: `/teachbot/enable`) - Topic to publish enable state
+- `publish_rate` (default: `10.0`) - Publishing rate in Hz
 
 ### 3. `ur_teachbot_follower` ⚠️ **MoveIt Python API - Advanced**
 

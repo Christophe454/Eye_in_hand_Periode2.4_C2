@@ -1,4 +1,6 @@
 from setuptools import find_packages, setup
+from glob import glob
+import os
 
 package_name = 'my_ur_teachbot'
 
@@ -10,6 +12,7 @@ setup(
         ('share/ament_index/resource_index/packages',
             ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
+        (os.path.join('share', package_name, 'luanch'), glob('luanch/*.launch.py')),
     ],
     install_requires=['setuptools'],
     zip_safe=True,
@@ -26,6 +29,7 @@ setup(
         'console_scripts': [
             'teachbot_follower_moveit_commander = my_ur_teachbot.teachbot_follower_moveit_commander:main',
             'teachbot_follower_action = my_ur_teachbot.teachbot_follower_action:main',
+            'teachbot_enable_gui = my_ur_teachbot.teachbot_enable_gui:main',
         ],
     },
 )
