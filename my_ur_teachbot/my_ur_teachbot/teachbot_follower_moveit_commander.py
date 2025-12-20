@@ -19,7 +19,7 @@ class URTeachBotFollowerCommander(Node):
     """Node that follows teachbot joint commands using trajectory messages."""
     
     def __init__(self):
-        super().__init__('ur_teachbot_follower')
+        super().__init__('teachbot_follower_moveit_commander')
         
         # Declare parameters
         self.declare_parameter('teachbot_topic', '/teachbot/joint_states')
@@ -54,10 +54,11 @@ class URTeachBotFollowerCommander(Node):
             depth=10
         )
         
-        # Create publisher for joint trajectory
+        # Create publisher for joint trajectory commands
+        # Note: Most controllers accept commands on the /commands topic
         self.trajectory_pub = self.create_publisher(
             JointTrajectory,
-            f'/{controller_name}/joint_trajectory',
+            f'/{controller_name}/commands',
             qos_profile
         )
         
@@ -73,7 +74,7 @@ class URTeachBotFollowerCommander(Node):
         self.timer = self.create_timer(self.update_rate, self.update_robot_position)
         
         self.get_logger().info(f'Subscribed to {teachbot_topic}')
-        self.get_logger().info(f'Publishing to /{controller_name}/joint_trajectory')
+        self.get_logger().info(f'Publishing to /{controller_name}/commands')
         self.get_logger().info(f'Update rate: {self.update_rate} seconds')
         self.get_logger().info('Ready to follow teachbot commands')
     
@@ -118,12 +119,26 @@ class URTeachBotFollowerCommander(Node):
         """Send a trajectory command to move the robot."""
         # Create trajectory message
         trajectory = JointTrajectory()
-        trajectory.header.stamp = self.get_clock().now().to_msg()
-        trajectory.joint_names = list(joint_states.name)
+        # Don't set timestamp - let controller use current time
+        # trajectory.header.stamp = self.get_clock().now().to_msg()
+        trajectory.header.stamp.sec = 0
+        trajectory.header.stamp.nanosec = 0
+        # Strip tf_prefix from joint names (e.g., 'teachbot/shoulder_pan_joint' -> 'shoulder_pan_joint')
+        trajectory.joint_names = [name.split('/')[-1] for name in joint_states.name]
         
-        # Create trajectory point
+        # Log joint name mapping for debugging
+        if any('/' in name for name in joint_states.name):
+            self.get_logger().debug(
+                f'Stripped tf_prefix: {list(joint_states.name)} -> {trajectory.joint_names}'
+            )
+        
+        # Create trajectory point with velocities and accelerations
         point = JointTrajectoryPoint()
         point.positions = list(joint_states.position)
+        # Add velocities (zero at end point for smooth stop)
+        point.velocities = [0.0] * len(joint_states.position)
+        # Add accelerations (optional but recommended)
+        point.accelerations = [0.0] * len(joint_states.position)
         point.time_from_start = Duration(
             sec=int(self.trajectory_duration),
             nanosec=int((self.trajectory_duration % 1) * 1e9)
@@ -135,7 +150,7 @@ class URTeachBotFollowerCommander(Node):
         self.trajectory_pub.publish(trajectory)
         
         self.get_logger().info(
-            f'Sent trajectory: {[f"{p:.3f}" for p in joint_states.position]}'
+            f'Sent trajectory to {trajectory.joint_names}: {[f"{p:.3f}" for p in joint_states.position]}'
         )
         
         # Update last commanded positions
