@@ -27,7 +27,6 @@ setup(
     },
     entry_points={
         'console_scripts': [
-            'teachbot_follower_moveit_commander = my_ur_teachbot.teachbot_follower_moveit_commander:main',
             'teachbot_follower_action = my_ur_teachbot.teachbot_follower_action:main',
             'teachbot_enable_gui = my_ur_teachbot.teachbot_enable_gui:main',
         ],

@@ -26,7 +26,7 @@ class URTeachBotFollowerAction(Node):
         # Declare parameters
         self.declare_parameter('teachbot_topic', '/teachbot/joint_states')
         self.declare_parameter('enable_topic', '/teachbot/enable')
-        self.declare_parameter('controller_name', 'scaled_joint_trajectory_controller')
+        self.declare_parameter('controller_name', 'joint_trajectory_controller')
         self.declare_parameter('update_rate', 0.5)  # seconds between updates
         self.declare_parameter('position_tolerance', 0.01)  # radians
         self.declare_parameter('trajectory_duration', 2.0)  # seconds - increased to avoid path tolerance violations
