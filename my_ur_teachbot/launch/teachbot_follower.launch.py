@@ -6,7 +6,8 @@ Starts both the teachbot follower action node and the enable GUI
 
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument
-from launch.substitutions import LaunchConfiguration
+from launch.substitutions import LaunchConfiguration, PythonExpression
+from launch.conditions import IfCondition
 from launch_ros.actions import Node
 
 
@@ -29,10 +30,20 @@ def generate_launch_description():
             description='Update rate in seconds for sending trajectories'
         )
     )
+    
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            'enable_mode',
+            default_value='gui',
+            choices=['gui', 'button'],
+            description='Enable mode: "gui" for manual GUI button, "button" for teachbot button control'
+        )
+    )
 
     # Get launch configurations
     controller_name = LaunchConfiguration('controller_name')
     update_rate = LaunchConfiguration('update_rate')
+    enable_mode = LaunchConfiguration('enable_mode')
 
     # Teachbot follower action node
     teachbot_follower_node = Node(
@@ -46,17 +57,32 @@ def generate_launch_description():
         }]
     )
 
-    # Enable GUI node
+    # Enable GUI node (manual button control)
     enable_gui_node = Node(
         package='my_ur_teachbot',
         executable='teachbot_enable_gui',
         name='teachbot_enable_gui',
         output='screen',
+        condition=IfCondition(
+            PythonExpression(["'", enable_mode, "' == 'gui'"])
+        )
+    )
+    
+    # Enable from button node (teachbot button control)
+    enable_button_node = Node(
+        package='my_ur_teachbot',
+        executable='teachbot_enable_from_button',
+        name='teachbot_enable_from_button',
+        output='screen',
+        condition=IfCondition(
+            PythonExpression(["'", enable_mode, "' == 'button'"])
+        )
     )
 
     nodes_to_launch = [
         teachbot_follower_node,
         enable_gui_node,
+        enable_button_node,
     ]
 
     return LaunchDescription(declared_arguments + nodes_to_launch)

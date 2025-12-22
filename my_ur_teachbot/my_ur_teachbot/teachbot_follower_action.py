@@ -24,7 +24,7 @@ class URTeachBotFollowerAction(Node):
         super().__init__('teachbot_follower_action')
         
         # Declare parameters
-        self.declare_parameter('teachbot_topic', '/teachbot/joint_states')
+        self.declare_parameter('teachbot_topic', '/teachbot/ur/joint_states')
         self.declare_parameter('enable_topic', '/teachbot/enable')
         self.declare_parameter('controller_name', 'joint_trajectory_controller')
         self.declare_parameter('update_rate', 0.5)  # seconds between updates
