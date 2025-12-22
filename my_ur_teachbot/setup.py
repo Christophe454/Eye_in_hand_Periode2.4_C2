@@ -28,8 +28,6 @@ setup(
     entry_points={
         'console_scripts': [
             'teachbot_follower_action = my_ur_teachbot.teachbot_follower_action:main',
-            'teachbot_enable_gui = my_ur_teachbot.teachbot_enable_gui:main',
-            'teachbot_enable_from_button = my_ur_teachbot.teachbot_enable_from_button:main',
         ],
     },
 )
