@@ -1,7 +1,6 @@
 #include <cstdio>
 #include <iostream>
 using namespace std;
-//#include <pluginlib/class_loader.hpp>
 
 // MoveIt
 #include <moveit/robot_model_loader/robot_model_loader.h>
@@ -10,17 +9,16 @@ using namespace std;
 #include <moveit/kinematic_constraints/utils.h>
 #include <moveit_msgs/msg/display_trajectory.hpp>
 #include <moveit_msgs/msg/planning_scene.h>
-//#include <moveit_visual_tools/moveit_visual_tools.h>
 #include <moveit/move_group_interface/move_group_interface.h>
 
-static const rclcpp::Logger LOGGER = rclcpp::get_logger("my_demo_cpp");
+static const rclcpp::Logger LOGGER = rclcpp::get_logger("my_ur_demo_cpp");
 
 int main(int argc, char ** argv)
 {
     (void) argc;
     (void) argv;
 
-    printf("My Demo CPP\n");
+    printf("My UR demo CPP\n");
  
     rclcpp::init(argc, argv);
     //rclcpp::NodeOptions node_options;
@@ -45,8 +43,6 @@ int main(int argc, char ** argv)
     // :moveit_codedir:`MoveGroupInterface<moveit_ros/planning_interface/move_group_interface/include/moveit/move_group_interface/move_group_interface.h>`
     // class can be easily set up using just the name of the planning group you would like to control and plan for.
     moveit::planning_interface::MoveGroupInterface move_group(move_group_node, PLANNING_GROUP);
-
-
 
     string group_states[] = {"home", "left", "right", "home", "resting"};
     for(const string &group_state : group_states){

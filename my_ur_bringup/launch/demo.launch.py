@@ -217,8 +217,8 @@ def launch_setup(context, *args, **kwargs):
     }
 
     demo_node = Node(
-        package="my_demo_cpp",
-        executable="my_demo_cpp_node",
+        package="my_ur_demo_cpp",
+        executable="my_ur_demo_cpp_node",
         output="screen",
         parameters=[
             robot_description,

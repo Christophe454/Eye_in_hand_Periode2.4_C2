@@ -1,6 +1,6 @@
 from setuptools import find_packages, setup
 
-package_name = 'my_demo_python'
+package_name = 'my_ur_demo'
 
 setup(
     name=package_name,
@@ -20,7 +20,7 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'my_demo_node = my_demo.my_demo_node:main'
+            'demo = my_ur_demo.demo:main'
         ],
     },
 )
