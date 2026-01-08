@@ -85,7 +85,7 @@ def generate_test_description():
             )
         ),
         launch_arguments={
-            "ur_type": "ur5e",
+            "ur_type": "ur5",
             "launch_rviz": "false",
             "gazebo_gui": "false",
             "start_joint_controller": "true",

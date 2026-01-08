@@ -32,9 +32,10 @@
 import os
 
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument
+from launch.actions import DeclareLaunchArgument, RegisterEventHandler, TimerAction, ExecuteProcess
 from launch.actions import OpaqueFunction
 from launch.conditions import IfCondition
+from launch.event_handlers import OnProcessStart
 from launch.substitutions import Command, FindExecutable, LaunchConfiguration, PathJoinSubstitution
 from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
@@ -74,18 +75,32 @@ def launch_setup(context, *args, **kwargs):
     launch_rviz = LaunchConfiguration("launch_rviz")
     launch_servo = LaunchConfiguration("launch_servo")
 
-    joint_limit_params = PathJoinSubstitution(
-        [FindPackageShare(description_package), "config", ur_type, "joint_limits.yaml"]
-    )
-    kinematics_params = PathJoinSubstitution(
-        [FindPackageShare(description_package), "config", ur_type, "default_kinematics.yaml"]
-    )
-    physical_params = PathJoinSubstitution(
-        [FindPackageShare(description_package), "config", ur_type, "physical_parameters.yaml"]
-    )
-    visual_params = PathJoinSubstitution(
-        [FindPackageShare(description_package), "config", ur_type, "visual_parameters.yaml"]
-    )
+    if 0:
+        joint_limit_params = PathJoinSubstitution(
+            [FindPackageShare(description_package), "config", ur_type, "joint_limits.yaml"]
+        )
+        kinematics_params = PathJoinSubstitution(
+            [FindPackageShare(description_package), "config", ur_type, "default_kinematics.yaml"]
+        )
+        physical_params = PathJoinSubstitution(
+            [FindPackageShare(description_package), "config", ur_type, "physical_parameters.yaml"]
+        )
+        visual_params = PathJoinSubstitution(
+            [FindPackageShare(description_package), "config", ur_type, "visual_parameters.yaml"]
+        )
+    else:
+        joint_limit_params = PathJoinSubstitution(
+            [FindPackageShare("my_ur_description"), "config", "joint_limits.yaml"]
+        )
+        kinematics_params = PathJoinSubstitution(
+            [FindPackageShare("my_ur_description"), "config", "default_kinematics.yaml"]
+        )
+        physical_params = PathJoinSubstitution(
+            [FindPackageShare("my_ur_description"), "config", "physical_parameters.yaml"]
+        )
+        visual_params = PathJoinSubstitution(
+            [FindPackageShare("my_ur_description"), "config", "visual_parameters.yaml"]
+        )
     if 0:
         robot_description_content = Command(
             [
@@ -179,12 +194,12 @@ def launch_setup(context, *args, **kwargs):
 
 
     robot_description_kinematics = PathJoinSubstitution(
-        [FindPackageShare(moveit_config_package), "config", "ur_config", "kinematics.yaml"]
+        [FindPackageShare(moveit_config_package), "config",  "kinematics.yaml"]
     )
 
-    # robot_description_planning = {
-    # "robot_description_planning": load_yaml_abs(str(joint_limit_params.perform(context)))
-    # }
+    robot_description_planning = PathJoinSubstitution(
+        [FindPackageShare(moveit_config_package), "config", "joint_limits.yaml"]
+    )
 
     # Planning Configuration
     ompl_planning_pipeline_config = {
@@ -194,21 +209,13 @@ def launch_setup(context, *args, **kwargs):
             "start_state_max_bounds_error": 0.1,
         }
     }
-    ompl_planning_yaml = load_yaml("my_ur_moveit_config", "config/ur_config/ompl_planning.yaml")
+    ompl_planning_yaml = load_yaml("my_ur_moveit_config", "config/ompl_planning.yaml")
     ompl_planning_pipeline_config["move_group"].update(ompl_planning_yaml)
 
-    # Trajectory Execution Configuration
-    controllers_yaml = load_yaml("my_ur_moveit_config", "config/ur_config/controllers.yaml")
-    # the scaled_joint_trajectory_controller does not work on fake hardware
-    change_controllers = context.perform_substitution(use_fake_hardware)
-    if change_controllers == "true":
-        controllers_yaml["scaled_joint_trajectory_controller"]["default"] = False
-        controllers_yaml["joint_trajectory_controller"]["default"] = True
-
-    moveit_controllers = {
-        "moveit_simple_controller_manager": controllers_yaml,
-        "moveit_controller_manager": "moveit_simple_controller_manager/MoveItSimpleControllerManager",
-    }
+    # Trajectory Execution Configuration - Load as parameter file
+    moveit_controllers_file = PathJoinSubstitution(
+        [FindPackageShare("my_ur_moveit_config"), "config", "moveit_controllers.yaml"]
+    )
 
     trajectory_execution = {
         "moveit_manage_controllers": False,
@@ -238,10 +245,10 @@ def launch_setup(context, *args, **kwargs):
             robot_description,
             robot_description_semantic,
             robot_description_kinematics,
-            # robot_description_planning,
+            robot_description_planning,
             ompl_planning_pipeline_config,
             trajectory_execution,
-            moveit_controllers,
+            moveit_controllers_file,
             planning_scene_monitor_parameters,
             {"use_sim_time": use_sim_time},
             warehouse_ros_config,
@@ -264,13 +271,13 @@ def launch_setup(context, *args, **kwargs):
             robot_description_semantic,
             ompl_planning_pipeline_config,
             robot_description_kinematics,
-            # robot_description_planning,
+            robot_description_planning,
             warehouse_ros_config,
         ],
     )
 
     # Servo node for realtime control
-    servo_yaml = load_yaml("my_ur_moveit_config", "config/ur_config/ur_servo.yaml")
+    servo_yaml = load_yaml("my_ur_moveit_config", "config/ur_servo.yaml")
     servo_params = {"moveit_servo": servo_yaml}
     servo_node = Node(
         package="moveit_servo",
@@ -284,8 +291,25 @@ def launch_setup(context, *args, **kwargs):
         output="screen",
     )
 
-    nodes_to_start = [move_group_node, rviz_node, servo_node]
+    #nodes_to_start = [move_group_node, rviz_node, servo_node]
+    nodes_to_start = [move_group_node, rviz_node]
 
+    # Add delayed controller activation
+    activate_controller = TimerAction(
+        period=3.0,
+        actions=[
+            ExecuteProcess(
+                cmd=[
+                    'ros2', 'service', 'call',
+                    '/controller_manager/switch_controller',
+                    'controller_manager_msgs/srv/SwitchController',
+                    "{activate_controllers: ['scaled_joint_trajectory_controller']}"
+                ],
+                output='screen'
+            )
+        ]
+    )
+    nodes_to_start.append(activate_controller)
 
     return nodes_to_start
 
@@ -298,7 +322,7 @@ def generate_launch_description():
         DeclareLaunchArgument(
             "ur_type",
             description="Type/series of used UR robot.",
-            default_value="ur5e",
+            default_value="ur5",
             choices=["ur3", "ur5", "ur5e"],
         )
     )
@@ -388,8 +412,9 @@ def generate_launch_description():
     declared_arguments.append(
         DeclareLaunchArgument("launch_rviz", default_value="true", description="Launch RViz?")
     )
-    declared_arguments.append(
-        DeclareLaunchArgument("launch_servo", default_value="true", description="Launch Servo?")
-    )
+    if 0:
+        declared_arguments.append(
+            DeclareLaunchArgument("launch_servo", default_value="false", description="Launch Servo?")
+        )
 
     return LaunchDescription(declared_arguments + [OpaqueFunction(function=launch_setup)])
