@@ -99,7 +99,7 @@ def generate_launch_description():
                 "ur20",
                 "ur30",
             ],
-            default_value="ur5",
+            default_value="ur5e",
         )
     )
     declared_arguments.append(
@@ -128,19 +128,35 @@ def generate_launch_description():
             description="URDF/XACRO description file (absolute path) with the robot.",
         )
     )
-    declared_arguments.append(
-        DeclareLaunchArgument(
-            "moveit_launch_file",
-            default_value=PathJoinSubstitution(
-                [
-                    FindPackageShare("my_ur_gazebo"),
-                    "launch",
-                    "my_ur_moveit.launch.py",
-                ]
-            ),
-            description="Absolute path for MoveIt launch file, part of a config package with robot SRDF/XACRO files. Usually the argument "
-            "is not set, it enables use of a custom moveit config.",
+    if 0:
+        declared_arguments.append(
+            DeclareLaunchArgument(
+                "moveit_launch_file",
+                default_value=PathJoinSubstitution(
+                    [
+                        FindPackageShare("my_ur_gazebo"),
+                        "launch",
+                        "my_ur_moveit.launch.py",
+                    ]
+                ),
+                description="Absolute path for MoveIt launch file, part of a config package with robot SRDF/XACRO files. Usually the argument "
+                "is not set, it enables use of a custom moveit config.",
+            )
         )
-    )
+    else:
+        declared_arguments.append(
+            DeclareLaunchArgument(
+                "moveit_launch_file",
+                default_value=PathJoinSubstitution(
+                    [
+                        FindPackageShare("my_ur_bringup"),
+                        "launch",
+                        "moveit.launch.py",
+                    ]
+                ),
+                description="Absolute path for MoveIt launch file, part of a config package with robot SRDF/XACRO files. Usually the argument "
+                "is not set, it enables use of a custom moveit config.",
+            )
+        )
 
     return LaunchDescription(declared_arguments + [OpaqueFunction(function=launch_setup)])
