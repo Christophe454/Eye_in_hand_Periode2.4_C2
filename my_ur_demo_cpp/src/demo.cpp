@@ -23,8 +23,26 @@ int main(int argc, char ** argv)
     rclcpp::init(argc, argv);
     //rclcpp::NodeOptions node_options;
     //node_options.automatically_declare_parameters_from_overrides(true);
-    auto move_group_node = rclcpp::Node::make_shared("my_node", rclcpp::NodeOptions().automatically_declare_parameters_from_overrides(true));
- 
+    auto move_group_node = rclcpp::Node::make_shared("uf_lite6_demo_node", rclcpp::NodeOptions().automatically_declare_parameters_from_overrides(true));
+    
+    // Load robot description from file if not provided as parameter
+    // Dit is een warop. Op enige wijze kan de param list niet worden gezien door de demo node
+    if (!move_group_node->has_parameter("robot_description_semantic")) {
+        try {
+            std::string pkg_path = ament_index_cpp::get_package_share_directory("my_ur_moveit_config");
+            std::string srdf_path = pkg_path + "/config/my_ur.srdf";
+            
+            std::ifstream srdf_file(srdf_path);
+            if (srdf_file.is_open()) {
+                std::string srdf_content((std::istreambuf_iterator<char>(srdf_file)),
+                                         std::istreambuf_iterator<char>());
+                move_group_node->declare_parameter("robot_description_semantic", srdf_content);
+                RCLCPP_INFO(LOGGER, "Loaded robot_description_semantic from file");
+            }
+        } catch (const std::exception& e) {
+            RCLCPP_WARN(LOGGER, "Could not load SRDF: %s", e.what());
+        }
+    } 
 
     // We spin up a SingleThreadedExecutor for the current state monitor to get information
     // about the robot's state.
