@@ -66,7 +66,9 @@ def launch_setup(context, *args, **kwargs):
     launch_rviz = LaunchConfiguration("launch_rviz")
     rviz_config_file = LaunchConfiguration("rviz_config_file")
     gazebo_gui = LaunchConfiguration("gazebo_gui")
-    world_file = LaunchConfiguration("world_file")
+    #world_file = LaunchConfiguration("world_file")
+
+    xarm_gazebo_world = PathJoinSubstitution([FindPackageShare('my_ur_bringup'), 'worlds', 'empty_world.world'])
 
     robot_description_content = Command(
         [
@@ -165,8 +167,8 @@ def launch_setup(context, *args, **kwargs):
         launch_arguments={
             "gz_args": IfElseSubstitution(
                 gazebo_gui,
-                if_value=[" -r -v 4 ", world_file],
-                else_value=[" -s -r -v 4 ", world_file],
+                if_value=[" -r -v 4 ", xarm_gazebo_world],
+                else_value=[" -s -r -v 4 ", xarm_gazebo_world],
             )
         }.items(),
     )
@@ -247,7 +249,7 @@ def generate_launch_description():
         DeclareLaunchArgument(
             "controllers_file",
             default_value=PathJoinSubstitution(
-                [FindPackageShare("my_ur_gazebo"), "config", "ur_controllers.yaml"]
+                [FindPackageShare("my_ur_bringup"), "config", "ur_controllers.yaml"]
             ),
             description="Absolute path to YAML file with the controllers configuration.",
         )
@@ -291,7 +293,7 @@ def generate_launch_description():
         DeclareLaunchArgument(
             "rviz_config_file",
             default_value=PathJoinSubstitution(
-                [FindPackageShare("my_ur_gazebo"), "rviz", "rviz_config.rviz"]
+                [FindPackageShare("my_ur_bringup"), "rviz", "rviz_config.rviz"]
             ),
             description="Rviz config file (absolute path) to use when launching rviz.",
         )

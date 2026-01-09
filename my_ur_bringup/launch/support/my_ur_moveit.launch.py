@@ -165,7 +165,7 @@ def generate_launch_description():
     )
 
     rviz_config_file = PathJoinSubstitution(
-        [FindPackageShare("my_ur_gazebo"), "rviz", "rviz_config.rviz"]
+        [FindPackageShare("my_ur_bringup"), "rviz", "rviz_config.rviz"]
     )
     rviz_node = Node(
         package="rviz2",

@@ -17,7 +17,7 @@ Je kunt de teleoperatie op de robot zowel in simulatie als met een fysieke(Realw
 :::{tab-item} Simulatie
 
 ```bash
-ros2 launch my_ur_gazebo bringup.launch.py
+ros2 launch my_ur_bringup bringup.launch.py
 ```
 
 Er wordt de Gazebo simulatie omgeving voor een UR5 robot geopend en een RVIZ monitor. Vanuit de RVIZ monitor kun je door middel van de movegroup de robot laten bewegen naar voor ingestelde posities.

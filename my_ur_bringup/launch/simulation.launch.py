@@ -47,7 +47,7 @@ def launch_setup(context, *args, **kwargs):
     ur_control_launch = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             PathJoinSubstitution(
-                [FindPackageShare("my_ur_gazebo"), "launch", "bringup_control.launch.py"]
+                [FindPackageShare("my_ur_bringup"), "launch", "support", "bringup_control.launch.py"]
             )
         ),
         launch_arguments={
@@ -114,7 +114,7 @@ def generate_launch_description():
         DeclareLaunchArgument(
             "controllers_file",
             default_value=PathJoinSubstitution(
-                [FindPackageShare("my_ur_gazebo"), "config", "ur_controllers.yaml"]
+                [FindPackageShare("my_ur_bringup"), "config", "ur_controllers.yaml"]
             ),
             description="Absolute path to YAML file with the controllers configuration.",
         )
@@ -128,35 +128,20 @@ def generate_launch_description():
             description="URDF/XACRO description file (absolute path) with the robot.",
         )
     )
-    if 0:
-        declared_arguments.append(
-            DeclareLaunchArgument(
-                "moveit_launch_file",
-                default_value=PathJoinSubstitution(
-                    [
-                        FindPackageShare("my_ur_gazebo"),
-                        "launch",
-                        "my_ur_moveit.launch.py",
-                    ]
-                ),
-                description="Absolute path for MoveIt launch file, part of a config package with robot SRDF/XACRO files. Usually the argument "
-                "is not set, it enables use of a custom moveit config.",
-            )
+
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "moveit_launch_file",
+            default_value=PathJoinSubstitution(
+                [
+                    FindPackageShare("my_ur_bringup"),
+                    "launch",
+                    "movegroup.launch.py",
+                ]
+            ),
+            description="Absolute path for MoveIt launch file, part of a config package with robot SRDF/XACRO files. Usually the argument "
+            "is not set, it enables use of a custom moveit config.",
         )
-    else:
-        declared_arguments.append(
-            DeclareLaunchArgument(
-                "moveit_launch_file",
-                default_value=PathJoinSubstitution(
-                    [
-                        FindPackageShare("my_ur_bringup"),
-                        "launch",
-                        "moveit.launch.py",
-                    ]
-                ),
-                description="Absolute path for MoveIt launch file, part of a config package with robot SRDF/XACRO files. Usually the argument "
-                "is not set, it enables use of a custom moveit config.",
-            )
-        )
+    )
 
     return LaunchDescription(declared_arguments + [OpaqueFunction(function=launch_setup)])
