@@ -75,83 +75,20 @@ def launch_setup(context, *args, **kwargs):
     launch_rviz = LaunchConfiguration("launch_rviz")
     launch_servo = LaunchConfiguration("launch_servo")
 
-    if 0:
-        joint_limit_params = PathJoinSubstitution(
-            [FindPackageShare(description_package), "config", ur_type, "joint_limits.yaml"]
-        )
-        kinematics_params = PathJoinSubstitution(
-            [FindPackageShare(description_package), "config", ur_type, "default_kinematics.yaml"]
-        )
-        physical_params = PathJoinSubstitution(
-            [FindPackageShare(description_package), "config", ur_type, "physical_parameters.yaml"]
-        )
-        visual_params = PathJoinSubstitution(
-            [FindPackageShare(description_package), "config", ur_type, "visual_parameters.yaml"]
-        )
-    else:
-        joint_limit_params = PathJoinSubstitution(
-            [FindPackageShare("my_ur_description"), "config", "joint_limits.yaml"]
-        )
-        kinematics_params = PathJoinSubstitution(
-            [FindPackageShare("my_ur_description"), "config", "default_kinematics.yaml"]
-        )
-        physical_params = PathJoinSubstitution(
-            [FindPackageShare("my_ur_description"), "config", "physical_parameters.yaml"]
-        )
-        visual_params = PathJoinSubstitution(
-            [FindPackageShare("my_ur_description"), "config", "visual_parameters.yaml"]
-        )
-    if 0:
-        robot_description_content = Command(
-            [
-                PathJoinSubstitution([FindExecutable(name="xacro")]),
-                " ",
-                PathJoinSubstitution([FindPackageShare(description_package), "urdf", description_file]),
-                " ",
-                "robot_ip:=xxx.yyy.zzz.www",
-                " ",
-                "joint_limit_params:=",
-                joint_limit_params,
-                " ",
-                "kinematics_params:=",
-                kinematics_params,
-                " ",
-                "physical_params:=",
-                physical_params,
-                " ",
-                "visual_params:=",
-                visual_params,
-                " ",
-                "safety_limits:=",
-                safety_limits,
-                " ",
-                "safety_pos_margin:=",
-                safety_pos_margin,
-                " ",
-                "safety_k_position:=",
-                safety_k_position,
-                " ",
-                "name:=",
-                "ur",
-                " ",
-                "ur_type:=",
-                ur_type,
-                " ",
-                "script_filename:=ros_control.urscript",
-                " ",
-                "input_recipe_filename:=rtde_input_recipe.txt",
-                " ",
-                "output_recipe_filename:=rtde_output_recipe.txt",
-                " ",
-                "prefix:=",
-                prefix,
-                " ",
-            ]
-        )
-        robot_description = {"my_ur_description": robot_description_content}
 
-    else:
-        robot_description_content = Command(
+    joint_limit_params = PathJoinSubstitution(
+        [FindPackageShare("my_ur_description"), "config", "joint_limits.yaml"]
+    )
+    kinematics_params = PathJoinSubstitution(
+        [FindPackageShare("my_ur_description"), "config", "default_kinematics.yaml"]
+    )
+    physical_params = PathJoinSubstitution(
+        [FindPackageShare("my_ur_description"), "config", "physical_parameters.yaml"]
+    )
+    visual_params = PathJoinSubstitution(
+        [FindPackageShare("my_ur_description"), "config", "visual_parameters.yaml"]
+    )
+    robot_description_content = Command(
         [
             PathJoinSubstitution([FindExecutable(name="xacro")]),
             " ",
@@ -161,45 +98,21 @@ def launch_setup(context, *args, **kwargs):
     )
     robot_description = {"robot_description": robot_description_content}
 
-    # MoveIt Configuration
-    if 0:
-        robot_description_semantic_content = Command(
-            [
-                PathJoinSubstitution([FindExecutable(name="xacro")]),
-                " ",
-                PathJoinSubstitution(
-                    [FindPackageShare(moveit_config_package), "srdf", moveit_config_file]
-                ),
-                " ",
-                "name:=",
-                # Also ur_type parameter could be used but then the planning group names in yaml
-                # configs has to be updated!
-                "ur",
-                " ",
-                "prefix:=",
-                prefix,
-                " ",
-            ]
-        )
-        robot_description_semantic = {"robot_description_semantic": robot_description_semantic_content}
-
-    else:
-        # MoveIt Configuration
-        path_srdf =  os.path.join(get_package_share_directory("my_ur_moveit_config"), "config/my_ur.srdf")
-        with open(path_srdf, 'r') as f:
-            robot_description_semantic_content = f.read()
+    path_srdf =  os.path.join(get_package_share_directory("my_ur_moveit_config"), "config/my_ur.srdf")
+    with open(path_srdf, 'r') as f:
+        robot_description_semantic_content = f.read()
 
 
     robot_description_semantic = {"robot_description_semantic": robot_description_semantic_content}
 
 
-    robot_description_kinematics = PathJoinSubstitution(
-        [FindPackageShare(moveit_config_package), "config",  "kinematics.yaml"]
-    )
+    # Load kinematics yaml
+    kinematics_yaml = load_yaml("my_ur_moveit_config", "config/kinematics.yaml")
+    robot_description_kinematics = {"robot_description_kinematics": kinematics_yaml}
 
-    robot_description_planning = PathJoinSubstitution(
-        [FindPackageShare(moveit_config_package), "config", "joint_limits.yaml"]
-    )
+    # Load planning yaml
+    planning_yaml = load_yaml("my_ur_moveit_config", "config/joint_limits.yaml")
+    robot_description_planning = {"robot_description_planning": planning_yaml}
 
     # Planning Configuration
     ompl_planning_pipeline_config = {
@@ -221,7 +134,7 @@ def launch_setup(context, *args, **kwargs):
         "moveit_manage_controllers": False,
         "trajectory_execution.allowed_execution_duration_scaling": 1.2,
         "trajectory_execution.allowed_goal_duration_margin": 0.5,
-        "trajectory_execution.allowed_start_tolerance": 0.01,
+        "trajectory_execution.allowed_start_tolerance": 0.5,
     }
 
     planning_scene_monitor_parameters = {
