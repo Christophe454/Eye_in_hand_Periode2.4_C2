@@ -90,8 +90,11 @@ Je kunt de robot nu laten bewegen door de ` movegroup`-node te starten met:
 ```
 ros2 launch my_ur_bringup movegroup.launch.py 
 ```
-RVIZ zal nu worden opgestart en een virtuele weergave van de robot-opstelling wordt nu zichtbaar. Je kunt de robot nu laten bewegen door het selecteren van een pose met de knop `Goal State` een positie kiezen en de weg naar de positie volgen met de `Plan` knop. Vervolgens kun je `Plan & Execute` of `Execute` bedienen waarna de robot zal bewegen naar de gekozen pose.
-> Let op: Zorg ervoor dat de robot vrijelijk kan bewegen en geen obstakels tegen komt.
+RVIZ zal nu worden opgestart en een virtuele weergave van de robot-opstelling wordt nu zichtbaar. 
+De stand van de robot in de virtuele wereld moet overeen komen met de stand van de UR-robot.
+
+Je kunt de robot nu laten bewegen door het selecteren van een pose met de knop `Goal State` een positie kiezen en de weg naar de positie volgen met de `Plan` knop. Vervolgens kun je `Plan & Execute` of `Execute` bedienen waarna de robot zal bewegen naar de gekozen pose.
+>⚠️ Let op: Zorg ervoor dat de robot vrijelijk kan bewegen en geen obstakels tegen komt.
 
 ## Netwerksetup in VMWare
 Bij gebruik van virtuele-machine op development-computer, dient het netwerk als `bridge` geconfigureerd te zijn. Glijd met je muis over de icoontjes, linksonder van de virtuele machine, totdat je `Network Adapter` zie verschijnen. Het type dient Bridged te zijn. Zie Afbeelding.
