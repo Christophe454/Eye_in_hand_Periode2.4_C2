@@ -204,7 +204,6 @@ def launch_setup(context, *args, **kwargs):
         output="screen",
     )
 
-    #nodes_to_start = [move_group_node, rviz_node, servo_node]
     nodes_to_start = [move_group_node, rviz_node]
 
     # Add delayed controller activation
@@ -236,7 +235,22 @@ def generate_launch_description():
             "ur_type",
             description="Type/series of used UR robot.",
             default_value="ur5",
-            choices=["ur3", "ur5", "ur5e"],
+            choices=[
+                "ur3",
+                "ur5",
+                "ur10",
+                "ur3e",
+                "ur5e",
+                "ur7e",
+                "ur10e",
+                "ur12e",
+                "ur16e",
+                "ur8long",
+                "ur15",
+                "ur18",
+                "ur20",
+                "ur30",
+            ],
         )
     )
     declared_arguments.append(

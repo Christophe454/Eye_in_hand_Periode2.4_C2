@@ -119,7 +119,7 @@ def launch_setup(context, *args, **kwargs):
                 " ",
                 "ur_type:=",
                 ur_type,
-                " ",
+                " ",load_robot_description.launch
                 "script_filename:=ros_control.urscript",
                 " ",
                 "input_recipe_filename:=rtde_input_recipe.txt",
@@ -259,7 +259,22 @@ def generate_launch_description():
             "ur_type",
             description="Type/series of used UR robot.",
             default_value="ur5",
-            choices=["ur3", "ur5", "ur5e"],
+            choices=[
+                "ur3",
+                "ur5",
+                "ur10",
+                "ur3e",
+                "ur5e",
+                "ur7e",
+                "ur10e",
+                "ur12e",
+                "ur16e",
+                "ur8long",
+                "ur15",
+                "ur18",
+                "ur20",
+                "ur30",
+            ],
         )
     )
     declared_arguments.append(

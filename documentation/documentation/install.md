@@ -1,10 +1,7 @@
 # Installatie van de UR-template
 
+Hier wordt beschreven hoe je de template kan verkrijgen, kunt bouwen en tenslotte kunt testen.
 
-Voor dat je begint dien je een clone van de `my_ur_ROS2` repository te maken.
-
-
-Voor dat je begint dien je een clone van de `my_ur_ROS2` repository te maken.
 
 
 ## Cloning de ROS2 Universal Robots template
@@ -58,6 +55,7 @@ git clone https://github.com/AvansMechatronica/my_ur_ROS2.git
 
 
 ## Installatie van Universal Robot support packages
+Met onderstaand commando worden ale benodigde software voor de template geinstalleerd en de workspace gebouwd met colcon.
 
 ```bash
 cd ~/my_ur_ws/src/my_ur_ROS2/install
@@ -72,4 +70,10 @@ cd ~/my_ur_ws
 colcon build --symlink-install
 source install/setup.bash
 
+```
+## Testen van de installatie
+Je kunt de installatie testen door onderstaand commando. Je hebt hiervoor geen fysieke robot of simualtie omgeving nodig.
+
+```bash
+ros2 launch my_ur_moveit_config demo.launch.py
 ```
