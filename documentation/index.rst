@@ -18,44 +18,14 @@ Welkom bij de Universal Robot Template Repository
 
    documentation/overview.md
    documentation/install.md
-   documentation/setup_assistant.md
-   documentation/simulation.md
-   documentation/demo_programs.md
    documentation/real_robot.md
+   documentation/simulation.md
+   documentation/setup_assistant.md
+   documentation/virtual_environment.md
+   documentation/demo_programs.md
    documentation/teachbot.md
    documentation/troubleshooting.md
-
-
-License
-=======
-
-`License CC BY-NC-SA 4.0 <https://creativecommons.org/licenses/by-nc-sa/4.0/>`_
-.. Example documentation master file, created by
-   sphinx-quickstart on Sat Sep 23 20:35:12 2023.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
-
-Welkom bij de Universal Robot Template Repository
-=================================================
-
-**Welkom bij de Universal Robot Template Repository** 
-
-.. note::
-   This project is under active development.
-
-
-.. toctree::
-   :maxdepth: 3
-   :caption: Inhoudsopgave:
-
-   documentation/overview.md
-   documentation/install.md
-   documentation/setup_assistant.md
-   documentation/simulation.md
-   documentation/demo_programs.md
-   documentation/real_robot.md
-   documentation/teachbot.md
-   documentation/troubleshooting.md
+   documentation/faq.md
 
 
 License
