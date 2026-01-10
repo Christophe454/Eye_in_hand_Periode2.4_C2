@@ -5,6 +5,21 @@ In dit hoofdtuk wordt beschreven hoe je een verbinding kunt opzetten tussen de d
 ## Netwerkverbinding verbinding
 De robot en development-computer worden met elkaar verbonden door middel van een router.
 
+::::{grid} 2
+:::{grid-item-card} 
+![image](../images/router1.jpg)
+:::
+:::{grid-item-card}
+![image](../images/router2.jpg)
+:::
+::::
+
+
+
+
+
+
+
 ### Configuratie router
 De router dient geconfigureerd te worden zodat het subnet `192.168.1.0' wordt. Je krijgt hierdoor een afzonderlijk netwerk waarin je ook je andere robot-cel devices kunt opnemen zals b.v. camera's of de teachbot. Tevens voorkom je inteferenties met andere sub-netten.
 >Het instellen van de router valt buiten het deze bsachrijving en is router-type afhankelijk.
