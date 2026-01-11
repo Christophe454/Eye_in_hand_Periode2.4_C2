@@ -104,3 +104,8 @@ Bij gebruik van virtuele-machine op development-computer, dient het netwerk als 
 Als dit niet het geval is click dan op het Network Adapter icoontje en selecteer `Settings`. Selecteer in het keuzemenu de optie `Bridged`
 
 ![image](../images/vmware2.png)
+
+## Extra informatie
+[Officiele documentatie UR CB3 Robot Setup](https://docs.universal-robots.com/Universal_Robots_ROS2_Documentation/doc/ur_client_library/doc/setup/robot_setup.html)
+
+[Universal Robots ROS 2 driver documentation](https://docs.universal-robots.com/Universal_Robots_ROS2_Documentation/index.html)
