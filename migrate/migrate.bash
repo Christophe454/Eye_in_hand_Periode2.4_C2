@@ -4,13 +4,25 @@
 # Usage: ./migrate.bash <old_type> <new_type>
 # Example: ./migrate.bash ur5 ur10e
 
-set -e
-
 # Color codes for output
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 NC='\033[0m' # No Color
+
+# Supported UR robot types
+VALID_TYPES=("ur3" "ur5" "ur10" "ur3e" "ur5e" "ur7e" "ur10e" "ur12e" "ur16e" "ur8long" "ur15" "ur18" "ur20" "ur30")
+
+# Function to validate robot type
+validate_robot_type() {
+    local type=$1
+    for valid_type in "${VALID_TYPES[@]}"; do
+        if [ "$type" = "$valid_type" ]; then
+            return 0
+        fi
+    done
+    return 1
+}
 
 # Check if correct number of arguments provided
 if [ "$#" -ne 2 ]; then
@@ -19,16 +31,27 @@ if [ "$#" -ne 2 ]; then
     echo "Example: $0 ur5 ur10e"
     echo ""
     echo "Supported UR robot types:"
-    echo "  - ur3, ur3e"
-    echo "  - ur5, ur5e"
-    echo "  - ur10, ur10e"
-    echo "  - ur16e"
-    echo "  - ur20"
+    echo "  - ur3, ur5, ur10"
+    echo "  - ur3e, ur5e, ur7e, ur10e, ur12e, ur16e"
+    echo "  - ur8long, ur15, ur18, ur20, ur30"
     exit 1
 fi
 
 OLD_TYPE=$1
 NEW_TYPE=$2
+
+# Validate robot types
+if ! validate_robot_type "$OLD_TYPE"; then
+    echo -e "${RED}Error: Invalid old robot type '$OLD_TYPE'${NC}"
+    echo "Supported types: ${VALID_TYPES[*]}"
+    exit 1
+fi
+
+if ! validate_robot_type "$NEW_TYPE"; then
+    echo -e "${RED}Error: Invalid new robot type '$NEW_TYPE'${NC}"
+    echo "Supported types: ${VALID_TYPES[*]}"
+    exit 1
+fi
 
 # Get the script directory and workspace root
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -72,12 +95,42 @@ replace_in_file() {
     fi
 }
 
+# Function to replace default_value in launch files
+replace_default_value() {
+    local file=$1
+    local old=$2
+    local new=$3
+    
+    if [ -f "$file" ]; then
+        if grep -q "default_value=\"$old\"" "$file"; then
+            sed -i "s/default_value=\"$old\"/default_value=\"$new\"/g" "$file"
+            echo -e "${GREEN}✓${NC} Modified: $file"
+            ((MODIFIED_COUNT++))
+        fi
+    fi
+}
+
+# Function to replace xacro:arg default in URDF files
+replace_xacro_arg() {
+    local file=$1
+    local old=$2
+    local new=$3
+    
+    if [ -f "$file" ]; then
+        if grep -q "name=\"ur_type\" default=\"$old\"" "$file"; then
+            sed -i "s/name=\"ur_type\" default=\"$old\"/name=\"ur_type\" default=\"$new\"/g" "$file"
+            echo -e "${GREEN}✓${NC} Modified: $file"
+            ((MODIFIED_COUNT++))
+        fi
+    fi
+}
+
 # Process the main URDF/XACRO file
 TARGET_FILE="$WORKSPACE_ROOT/my_ur_description/urdf/ur.urdf.xacro"
 
 if [ -f "$TARGET_FILE" ]; then
     echo -e "${YELLOW}Processing file: $TARGET_FILE${NC}"
-    replace_in_file "$TARGET_FILE" "$OLD_TYPE" "$NEW_TYPE"
+    replace_xacro_arg "$TARGET_FILE" "$OLD_TYPE" "$NEW_TYPE"
 else
     echo -e "${RED}Error: Target file not found: $TARGET_FILE${NC}"
     exit 1
@@ -89,8 +142,8 @@ CONFIG_DIR="$WORKSPACE_ROOT/my_ur_moveit_config/config"
 if [ -d "$CONFIG_DIR" ]; then
     echo -e "${YELLOW}Processing MoveIt config files${NC}"
     
-    # Find and process all relevant config files
-    find "$CONFIG_DIR" -maxdepth 1 -type f \
+    # Find and process all relevant config files (including subdirectories)
+    find "$CONFIG_DIR" -type f \
         \( -name "*.yaml" -o -name "*.srdf" -o -name "*.rviz" \) | while read -r file; do
         replace_in_file "$file" "$OLD_TYPE" "$NEW_TYPE"
     done
@@ -98,19 +151,24 @@ else
     echo -e "${YELLOW}Warning: MoveIt config directory not found: $CONFIG_DIR${NC}"
 fi
 
-# Process launch files in my_ur_bringup/launch
-LAUNCH_DIR="$WORKSPACE_ROOT/my_ur_bringup/launch"
+# Process launch files in all packages
+LAUNCH_PACKAGES=(
+    "my_ur_bringup"
+    "my_ur_description"
+    "my_ur_moveit_config"
+)
 
-if [ -d "$LAUNCH_DIR" ]; then
-    echo -e "${YELLOW}Processing launch files${NC}"
+echo -e "${YELLOW}Processing launch files${NC}"
+for package in "${LAUNCH_PACKAGES[@]}"; do
+    LAUNCH_DIR="$WORKSPACE_ROOT/$package/launch"
     
-    # Find and process all launch.py files
-    find "$LAUNCH_DIR" -type f -name "*.launch.py" | while read -r file; do
-        replace_in_file "$file" "$OLD_TYPE" "$NEW_TYPE"
-    done
-else
-    echo -e "${YELLOW}Warning: Launch directory not found: $LAUNCH_DIR${NC}"
-fi
+    if [ -d "$LAUNCH_DIR" ]; then
+        # Find and process all launch.py files, specifically targeting default_value
+        find "$LAUNCH_DIR" -type f -name "*.launch.py" | while read -r file; do
+            replace_default_value "$file" "$OLD_TYPE" "$NEW_TYPE"
+        done
+    fi
+done
 
 echo ""
 echo -e "${GREEN}========================================${NC}"
