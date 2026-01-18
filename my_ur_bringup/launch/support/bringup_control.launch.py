@@ -312,13 +312,31 @@ def generate_launch_description():
     )
 
     # Set GZ_SIM_RESOURCE_PATH to help Gazebo find ROS package meshes
+    gz_resource_paths = [
+        os.path.join(os.path.dirname(FindPackageShare('ur_description').find('ur_description')), ''),
+        os.pathsep,
+    ]
+    
+    # Try to add robotiq_description if available
+    try:
+        robotiq_path = os.path.join(os.path.dirname(FindPackageShare('robotiq_description').find('robotiq_description')), '')
+        gz_resource_paths.extend([robotiq_path, os.pathsep])
+    except Exception:
+        pass  # robotiq_description not found, skip
+
+    # Try to add epick_description if available
+    try:
+        epick_path = os.path.join(os.path.dirname(FindPackageShare('epick_description').find('epick_description')), '')
+        gz_resource_paths.extend([epick_path, os.pathsep])
+    except Exception:
+        pass  # epick_description not found, skip
+
+
+    gz_resource_paths.append(os.environ.get('GZ_SIM_RESOURCE_PATH', ''))
+    
     gz_resource_path = SetEnvironmentVariable(
         name='GZ_SIM_RESOURCE_PATH',
-        value=[
-            os.path.join(os.path.dirname(FindPackageShare('ur_description').find('ur_description')), ''),
-            os.pathsep,
-            os.environ.get('GZ_SIM_RESOURCE_PATH', '')
-        ]
-    )
+        value=gz_resource_paths
+    )     
 
     return LaunchDescription(declared_arguments + [gz_resource_path, OpaqueFunction(function=launch_setup)])
