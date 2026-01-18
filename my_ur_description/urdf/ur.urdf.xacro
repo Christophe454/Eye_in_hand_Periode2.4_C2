@@ -172,10 +172,18 @@
   <xacro:include filename="$(find robotiq_description)/urdf/robotiq_2f_85_macro.urdf.xacro" />
 
   <!-- Robotiq Gripper -->
-
+  <!--
   <xacro:robotiq_gripper name="RobotiqGripperHardwareInterface" prefix="" parent="tool0" use_fake_hardware="$(arg use_fake_hardware)" com_port="$(arg com_port)">
       <origin xyz="0 0 0" rpy="0 0 0" />
   </xacro:robotiq_gripper>
+  -->
+  <!-- Import Epick Suction Cup macro -->
+  <xacro:include filename="$(find epick_description)/urdf/epick_single_suction_cup.xacro"/>
+
+  <!-- Epick Suction Cup -->
+  <!--
+  <xacro:epick_single_suction_cup parent="tool0" use_fake_hardware="false"/>
+  -->
 
   <gazebo reference="world">
   </gazebo>
@@ -187,6 +195,7 @@
       </ros>
     </plugin>
   </gazebo>
+
 
   <!-- ros2 control instance -->
   <xacro:ur_ros2_control

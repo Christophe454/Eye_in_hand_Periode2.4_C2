@@ -38,6 +38,7 @@ from launch.conditions import IfCondition
 from launch.event_handlers import OnProcessStart
 from launch.substitutions import Command, FindExecutable, LaunchConfiguration, PathJoinSubstitution
 from launch_ros.actions import Node
+from launch_ros.parameter_descriptions import ParameterValue
 from launch_ros.substitutions import FindPackageShare
 from ament_index_python.packages import get_package_share_directory
 import yaml
@@ -97,14 +98,14 @@ def launch_setup(context, *args, **kwargs):
             " ",
         ]
     )
-    robot_description = {"robot_description": robot_description_content}
+    robot_description = {"robot_description": ParameterValue(robot_description_content, value_type=str)}
 
     path_srdf =  os.path.join(get_package_share_directory("my_ur_moveit_config"), "config/my_ur.srdf")
     with open(path_srdf, 'r') as f:
         robot_description_semantic_content = f.read()
 
 
-    robot_description_semantic = {"robot_description_semantic": robot_description_semantic_content}
+    robot_description_semantic = {"robot_description_semantic": ParameterValue(robot_description_semantic_content, value_type=str)}
 
 
     # Load kinematics yaml
