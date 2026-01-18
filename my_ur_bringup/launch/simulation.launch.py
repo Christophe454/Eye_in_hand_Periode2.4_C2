@@ -32,6 +32,7 @@ from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription, OpaqueFunction
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration, PathJoinSubstitution
+from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
 
 
@@ -56,6 +57,7 @@ def launch_setup(context, *args, **kwargs):
             "controllers_file": controllers_file,
             "description_file": description_file,
             "launch_rviz": "false",
+            "initial_joint_controller": "joint_trajectory_controller",
         }.items(),
     )
 
@@ -65,6 +67,7 @@ def launch_setup(context, *args, **kwargs):
             "ur_type": ur_type,
             "use_sim_time": "true",
             "launch_rviz": "true",
+            "sim": "true",
         }.items(),
     )
 

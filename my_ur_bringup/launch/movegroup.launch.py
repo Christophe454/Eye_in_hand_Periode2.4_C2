@@ -74,6 +74,7 @@ def launch_setup(context, *args, **kwargs):
     use_sim_time = LaunchConfiguration("use_sim_time")
     launch_rviz = LaunchConfiguration("launch_rviz")
     launch_servo = LaunchConfiguration("launch_servo")
+    sim = LaunchConfiguration("sim")
 
 
     joint_limit_params = PathJoinSubstitution(
@@ -126,9 +127,14 @@ def launch_setup(context, *args, **kwargs):
     ompl_planning_pipeline_config["move_group"].update(ompl_planning_yaml)
 
     # Trajectory Execution Configuration - Load as parameter file
-    moveit_controllers_file = PathJoinSubstitution(
-        [FindPackageShare("my_ur_moveit_config"), "config", "moveit_controllers.yaml"]
-    )
+    if sim:
+        moveit_controllers_file = PathJoinSubstitution(
+            [FindPackageShare("my_ur_moveit_config"), "config", "moveit_controllers_sim.yaml"]
+        )
+    else:
+        moveit_controllers_file = PathJoinSubstitution(
+            [FindPackageShare("my_ur_moveit_config"), "config", "moveit_controllers_real.yaml"]
+        )
 
     trajectory_execution = {
         "moveit_manage_controllers": False,
@@ -338,6 +344,9 @@ def generate_launch_description():
     )
     declared_arguments.append(
         DeclareLaunchArgument("launch_rviz", default_value="true", description="Launch RViz?")
+    )
+    declared_arguments.append(
+        DeclareLaunchArgument("sim", default_value="false", description="Use simulation controllers?")
     )
     if 0:
         declared_arguments.append(

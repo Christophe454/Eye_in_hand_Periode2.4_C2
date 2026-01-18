@@ -164,6 +164,55 @@
     <origin xyz="0.0 0.0 0.01" rpy="0.0 0.0 ${pi}"/>
   </joint>
 
+
+    <xacro:arg name="use_fake_hardware" default="false" />
+    <xacro:arg name="com_port" default="/dev/ttyUSB0" />
+
+    <!-- Import macros -->
+    <xacro:include filename="$(find robotiq_description)/urdf/robotiq_2f_85_macro.urdf.xacro" />
+
+    <!-- Robotiq Gripper -->
+    <!--
+    <xacro:robotiq_gripper name="RobotiqGripperHardwareInterface" prefix="" parent="tool0" use_fake_hardware="$(arg use_fake_hardware)" com_port="$(arg com_port)">
+        <origin xyz="0 0 0" rpy="0 0 0" />
+    </xacro:robotiq_gripper>
+    -->
+  <!-- Gazebo Mimic Joint Plugin for Robotiq Gripper -->
+  <!--
+  <gazebo>
+    <plugin filename="libignition-gazebo-mimic-plugin.so" name="ignition::gazebo::systems::MimicConstraint">
+      <joint>robotiq_85_left_inner_knuckle_joint</joint>
+      <mimicJoint>robotiq_85_left_knuckle_joint</mimicJoint>
+      <multiplier>1.0</multiplier>
+      <offset>0</offset>
+    </plugin>
+    <plugin filename="libignition-gazebo-mimic-plugin.so" name="ignition::gazebo::systems::MimicConstraint">
+      <joint>robotiq_85_right_knuckle_joint</joint>
+      <mimicJoint>robotiq_85_left_knuckle_joint</mimicJoint>
+      <multiplier>-1.0</multiplier>
+      <offset>0</offset>
+    </plugin>
+    <plugin filename="libignition-gazebo-mimic-plugin.so" name="ignition::gazebo::systems::MimicConstraint">
+      <joint>robotiq_85_right_inner_knuckle_joint</joint>
+      <mimicJoint>robotiq_85_left_knuckle_joint</mimicJoint>
+      <multiplier>-1.0</multiplier>
+      <offset>0</offset>
+    </plugin>
+    <plugin filename="libignition-gazebo-mimic-plugin.so" name="ignition::gazebo::systems::MimicConstraint">
+      <joint>robotiq_85_left_finger_tip_joint</joint>
+      <mimicJoint>robotiq_85_left_knuckle_joint</mimicJoint>
+      <multiplier>-1.0</multiplier>
+      <offset>0</offset>
+    </plugin>
+    <plugin filename="libignition-gazebo-mimic-plugin.so" name="ignition::gazebo::systems::MimicConstraint">
+      <joint>robotiq_85_right_finger_tip_joint</joint>
+      <mimicJoint>robotiq_85_left_knuckle_joint</mimicJoint>
+      <multiplier>1.0</multiplier>
+      <offset>0</offset>
+    </plugin>
+  </gazebo>
+  -->
+
   <gazebo reference="world">
   </gazebo>
   <gazebo>
