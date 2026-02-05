@@ -39,6 +39,7 @@ joint_trajectory_controller:
       - wrist_3_joint
     command_interfaces:
       - position
+      - velocity
     state_interfaces:
       - position
       - velocity
@@ -67,6 +68,7 @@ scaled_joint_trajectory_controller:
       - wrist_3_joint
     command_interfaces:
       - position
+      - velocity
     state_interfaces:
       - position
       - velocity
