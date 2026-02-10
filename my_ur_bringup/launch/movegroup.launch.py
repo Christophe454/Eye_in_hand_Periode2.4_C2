@@ -128,7 +128,9 @@ def launch_setup(context, *args, **kwargs):
     ompl_planning_pipeline_config["move_group"].update(ompl_planning_yaml)
 
     # Trajectory Execution Configuration - Load as parameter file
-    if sim:
+    # Determine which controller config to use based on sim parameter
+    sim_value = sim.perform(context)
+    if sim_value == "true":
         moveit_controllers_file = PathJoinSubstitution(
             [FindPackageShare("my_ur_moveit_config"), "config", "moveit_controllers_sim.yaml"]
         )
@@ -228,7 +230,7 @@ def launch_setup(context, *args, **kwargs):
             )
         ]
     )
-    nodes_to_start.append(activate_controller)
+    #nodes_to_start.append(activate_controller)
 
     return nodes_to_start
 

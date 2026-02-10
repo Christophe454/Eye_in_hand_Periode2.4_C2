@@ -178,8 +178,9 @@
   </xacro:robotiq_gripper>
   -->
   <!-- Import Epick Suction Cup macro -->
+  <!--
   <xacro:include filename="$(find epick_description)/urdf/epick_single_suction_cup.xacro"/>
-
+  -->
   <!-- Epick Suction Cup -->
   <!--
   <xacro:epick_single_suction_cup parent="tool0" use_fake_hardware="false"/>
