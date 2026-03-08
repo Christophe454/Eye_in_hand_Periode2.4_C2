@@ -1,10 +1,11 @@
 # TOS-Teachbot
 
-
 ![image](../images/Logo_TOS_blauw.svg)
 **TeleOperation Services B.V.**
 
 Met de TOS-Teachbot kun je met een teleoperatie de joints van de UR robot bewegen.
+
+![inmage](../images/teachbot.png)   
 
 ## Voorbereidingen
 Instaleer de Techbot software vogends de [handleiding van Teachbot](https://avansmechatronica.github.io/teachbot/)
@@ -38,7 +39,7 @@ Start de simualtie:
 ros2 launch my_ur_bringup simulatreal_robotion.launch.py
 ```
 
-Er wordt de Gazebo simulatie omgeving voor een UR5 robot geopend en een RVIZ monitor. Vanuit de RVIZ monitor kun je door middel van dereal_robot movegroup de robot laten bewegen naar voor ingestelde posities.
+Er wordt de Gazebo simulatie omgeving voor een UR5 robot geopend en een RVIZ monitor. Vanuit de RVIZ monitor kun je door middel van de real_robot movegroup de robot laten bewegen naar voor ingestelde posities.
 
 
 :::

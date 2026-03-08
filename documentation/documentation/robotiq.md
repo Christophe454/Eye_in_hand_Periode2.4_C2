@@ -13,12 +13,16 @@ Let op: De gripper dient op de USB-poort van de development computer aangesloten
 
 :::{tab-item} Vinger-gripper
 
+![image](../images/robotiq-vinger-gripper.jpg)
+
 [documentation](https://avansmechatronica.github.io/ros2_robotiq_gripper/)
 
 
 :::
 
 :::{tab-item} Vacuum-gripper
+
+![image](../images/robotiq-epick.png)
 
 [documentation](https://avansmechatronica.github.io/ros2_epick_gripper/)
 
