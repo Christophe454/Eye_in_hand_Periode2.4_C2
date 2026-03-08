@@ -22,7 +22,7 @@ Welkom bij de Universal Robot Template Repository
    documentation/simulation.md
    documentation/setup_assistant.md
    documentation/virtual_environment.md
-   documentation/demo_programs.md
+   documentation/demo_programms.md
    documentation/robotiq.md
    documentation/teachbot.md
    documentation/troubleshooting.md

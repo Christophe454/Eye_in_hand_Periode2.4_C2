@@ -3,11 +3,11 @@
 In dit hoofdtuk wordt beschreven hoe je een verbinding kunt opzetten tussen de development-computer en de fysieke robot.
 
 ## Netwerkverbinding opzetten
-:::::{card} 
+::::::{card} 
 
-::::{tab-set}
+:::::{tab-set}
 
-:::{tab-item} Doormidddel van `router`
+::::{tab-item} Doormidddel van `router`
 
 Je kunt een verbinding opzetten tussen de robot en development-computer door middel van een router. De router zorgt voor een stabiele verbinding tussen de robot en development-computer, en voorkomt interferentie met andere apparaten in het netwerk. Tevens kun je met een router ook andere apparaten in het netwerk opnemen zoals b.v. camera's of de teachbot
 
@@ -20,9 +20,9 @@ Gebruik alleen de `LAN` poorten van de router, niet de `WAN` poort.
 :::
 
 
-:::
+::::
 
-:::{tab-item} Rechtstreekse met een `cat5-kabel`
+::::{tab-item} Rechtstreekse met een `cat5-kabel`
 Je kunt ook een rechtstreekse verbinding opzetten tussen de robot en development-computer door middel van een `cat5-kabel`. Kies deze optie als je geen andere apparaten in het netwerk wilt opnemen.
 
 je kunt in dit geval het ip-adres van de robot en development-computer handmatig instellen. Zorg ervoor dat je deveopment-computer een ip-adres krijgt in het subnet `192.168.1.x`.
@@ -43,11 +43,11 @@ Sluit de instellingen.
 Soms komt de netwerk verbinding niet tot stand, in dat geval kan het helpen om de netwerkverbindingen uit en weer aan te zetten. Je kunt ook proberen om de robot en development-computer te rebooten.
 :::
 
-:::
-
 ::::
 
 :::::
+
+::::::
 
 ### Netwerkconfiguratie development-computer testen
 Open een terminal en voer het volgende commando uit:
