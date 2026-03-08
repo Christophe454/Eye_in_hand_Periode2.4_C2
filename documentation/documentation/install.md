@@ -1,6 +1,6 @@
 # Installatie van de UR-template
 
-Hier wordt beschreven hoe je de template kan verkrijgen, kunt bouwen en tenslotte kunt testen.
+Hier wordt beschreven hoe je de template kunt verkrijgen, kunt bouwen en tenslotte kunt testen.
 
 ## Development computer
 Als in dit document gesproken wordt over een development-computer dan wordt hiermee bedoeld de laptop/computer waarop je de software in ROS2 ontwikkelt.
@@ -8,7 +8,7 @@ Als in dit document gesproken wordt over een development-computer dan wordt hier
 ## Cloning de ROS2 Universal Robots template
 Voor het maken van de ROS2 Universal Robots template maak je gebruik van een Github repository. Je kunt er voor kiezen om deze clone onder een eigen account van Github te plaatsen (1e keuze hieronder). Je kunt daarna eenvoudig backup's van je werk maken naar je eigen Github account.
 
-> we maken gebruik van een prefix my_ur in de packages van de repository om onderscheid te maken met de standaard Universal Robots packages.
+> we maken gebruik van een prefix `my_ur` in de packages van de repository om onderscheid te maken met de standaard Universal Robots packages.
 
 :::::{card} 
 

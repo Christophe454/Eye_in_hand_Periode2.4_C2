@@ -3,6 +3,49 @@
 In dit hoofdtuk wordt beschreven hoe je een verbinding kunt opzetten tussen de development-computer en de fysieke robot.
 
 ## Netwerkverbinding opzetten
+:::::{card} 
+
+::::{tab-set}
+
+:::{tab-item} Doormidddel van `router`
+
+Je kunt een verbinding opzetten tussen de robot en development-computer door middel van een router. De router zorgt voor een stabiele verbinding tussen de robot en development-computer, en voorkomt interferentie met andere apparaten in het netwerk. Tevens kun je met een router ook andere apparaten in het netwerk opnemen zoals b.v. camera's of de teachbot. Zorg ervoor dat de router een subnet heeft van `192.168.1.0/24`.
+
+:::
+
+:::{tab-item} Rechtstreekse met een `cat5-kabel`
+Je kunt ook een rechtstreekse verbinding opzetten tussen de robot en development-computer door middel van een `cat5-kabel`. Kies deze optie als je geen andere apparaten in het netwerk wilt opnemen.
+
+je kunt in dit geval het ip-adres van de robot en development-computer handmatig instellen. Zorg ervoor dat je deveopment-computer een ip-adres krijgt in het subnet `192.168.1.x`.
+
+Open op de development-computer de netwerkinstellingen:
+![image](../images/network-settings.png)
+
+Kies onder `wired` het tandwiel icoon en vervolgens `IPv4` tabblad. Kies hier voor `Manual` en vul de volgende gegevens in:
+* IP-adres: 192.168.1.1 (je kunt ook een ander ip-adres kiezen, zolang deze maar in het subnet `192.168.1.x` ligt)
+* Netmask: 255.255.255.0
+* Gateway: 192.168.1.1
+
+![imgage](../images/wired-config.png)
+
+Sluit de instellingen en test of de devolopment-computer het juiste ip-adres heeft gekregen door het volgende commando in de terminal te typen:
+```bash
+ifconfig | grep broadcast
+```
+In het resultaat moet een ip-adres te zien zijn dat in het subnet `192.168.1.x` ligt, bijvoorbeeld `192.168.1.1`.
+
+:::{tip}
+Soms komt de netwerk verbinding niet tot stand, in dat geval kan het helpen om de netwerkverbindingen uit en weer aan te zetten. Je kunt ook proberen om de robot en development-computer te rebooten.
+:::
+
+:::
+
+::::
+
+:::::
+
+
+
 De robot en development-computer worden met elkaar verbonden door middel van een router.
 
 ::::{grid} 2
