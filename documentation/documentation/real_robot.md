@@ -127,10 +127,12 @@ Op de teach-pendent van de UR-robot:
 
 Volg de output in de terminal en evalueer of er een goede connectie met de robot tot stand is gekomen.
 
->Je kunt ook in het bestand /<workspace>/src/my_ur_ROS2/my_ur_bringup/launch/real_robot.launch.py het ip-adres wijzigen op regel 45.Daarna hoef je de robot_ip argument niet meer aan bovenstaande commando toe te voegen.
+:::{tip}
+Je kunt ook in het bestand /<workspace>/src/my_ur_ROS2/my_ur_bringup/launch/real_robot.launch.py het ip-adres wijzigen op regel 45.Daarna hoef je de robot_ip argument niet meer aan bovenstaande commando toe te voegen.
+:::
 
 ## Testen van de robot
-Je kunt de robot nu laten bewegen door de ` movegroup`-node te starten met:
+Je kunt de robot nu laten bewegen door de `movegroup`-node te starten met:
 
 ```
 ros2 launch my_ur_bringup movegroup.launch.py 
