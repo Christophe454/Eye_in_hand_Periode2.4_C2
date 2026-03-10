@@ -168,10 +168,12 @@
   <xacro:arg name="use_fake_hardware" default="true" />
   <xacro:arg name="com_port" default="/dev/ttyUSB0" />
 
-  <!-- Import macros -->
-  <xacro:include filename="$(find robotiq_description)/urdf/robotiq_2f_85_macro.urdf.xacro" />
 
   <!-- Robotiq Gripper -->
+  <!-- Import macros -->
+  <!--
+  <xacro:include filename="$(find robotiq_description)/urdf/robotiq_2f_85_macro.urdf.xacro" />
+  -->
   <!--
   <xacro:robotiq_gripper name="RobotiqGripperHardwareInterface" prefix="" parent="tool0" use_fake_hardware="$(arg use_fake_hardware)" com_port="$(arg com_port)">
       <origin xyz="0 0 0" rpy="0 0 0" />

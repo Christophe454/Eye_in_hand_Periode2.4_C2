@@ -60,7 +60,7 @@ Met onderstaand commando worden alle benodigde software voor de template geinsta
 
 ```bash
 cd ~/my_ur_ws/src/my_ur_ROS2/install
-./install
+./install.bash
 ```
 
 ## Bouwen van de workspace
