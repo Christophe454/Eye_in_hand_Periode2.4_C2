@@ -94,6 +94,23 @@ Vul op de volgende gegevens in:
 
 ![image](../images/ur3.png)
 
+## Testen communicatie met uFactory Lite6 robot
+Je kunt de communicatie met de robot testen met het volgende commando:
+```bash
+ping <ip-address-robot>
+```
+
+Het resultaat moet dan hier op lijken
+```text
+PING <ip-address-robot> (<ip-address-robot>) 56(84) bytes of data.
+64 bytes from <ip-address-robot>: icmp_seq=1 ttl=64 time=0.030 ms
+64 bytes from <ip-address-robot>: icmp_seq=2 ttl=64 time=0.041 ms
+64 bytes from <ip-address-robot>: icmp_seq=3 ttl=64 time=0.040 ms
+^C
+--- <ip-address-robot> ping statistics ---
+3 packets transmitted, 3 received, 0% packet loss, time 2069ms
+
+```
 
 ## Starten van de robot
 
