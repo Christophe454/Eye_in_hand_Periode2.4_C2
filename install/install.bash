@@ -12,7 +12,8 @@ if dpkg -s ros-$ROS_DISTRO-ur-robot-driver &> /dev/null; then
     echo "Package ros-$ROS_DISTRO-ur-robot-driver is already installed."
 else
     echo "Package ros-$ROS_DISTRO-ur-robot-driver is not installed. Installing..."
-    git clone -b $ROS_DISTRO https://github.com/UniversalRobots/Universal_Robots_ROS2_Driver.git
+    sudo apt install install ros-$ROS_DISTRO-ur
+    #git clone -b $ROS_DISTRO https://github.com/UniversalRobots/Universal_Robots_ROS2_Driver.git
 fi
 
 #check is the package "ros-$ROS_DISTRO-ur-description" is installed
