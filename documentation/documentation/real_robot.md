@@ -94,6 +94,10 @@ Vul op de volgende gegevens in:
 
 ![image](../images/ur-external-control.jpg)
 
+:::{caution}
+Voor een juiste configuratie dienen `PROFINET` en `Ethernet/IP` uit te staan. 
+:::
+
 ## Testen communicatie met UR robot robot
 Je kunt de communicatie met de robot testen met het volgende commando:
 ```bash
@@ -111,9 +115,7 @@ PING <robot_ip> (<robot_ip>) 56(84) bytes of data.
 3 packets transmitted, 3 received, 0% packet loss, time 2069ms
 
 ```
-:::{caution}
-Voor een juiste configuratie dienen `PROFINET` en `Ethernet/IP` uit te staan. 
-:::
+
 
 ## Starten van de robot
 
@@ -131,7 +133,7 @@ Op de teach-pendent van de UR-robot:
 Volg de output in de terminal en evalueer of er een goede connectie met de robot tot stand is gekomen.
 
 :::{tip}
-Je kunt ook in het bestand /<workspace>/src/my_ur_ROS2/my_ur_bringup/launch/real_robot.launch.py het ip-adres wijzigen op regel 45.Daarna hoef je de robot_ip argument niet meer aan bovenstaande commando toe te voegen.
+Je kunt ook in het bestand `/<workspace>/src/my_ur_ROS2/my_ur_bringup/launch/real_robot.launch.py` het ip-adres wijzigen op regel 45.Daarna hoef je de robot_ip argument niet meer aan bovenstaande commando toe te voegen.
 :::
 
 ## Testen van de robot
