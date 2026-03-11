@@ -71,10 +71,10 @@ Verbind de UR-robot met het netwerk van de router met een `cat5-kabel` en voer d
 ### Opvragen IP-adres van de UR-robot
 Ga op de teachpendant van de UR-robot naar het Robot Instellen scherm en selecteer Netwerk.
 
-![Screenshot van het UR-robot netwerkconfiguratiescherm](../images/ur1.png)
+![Screenshot van het UR-robot netwerkconfiguratiescherm](../images/ur-network.jpg)
 
 :::{attention}
- Het IP-adres is niet aan te passen in DHCP-mode. Wijzig deze mode niet, lees alleen de waarde van het IP-adres uit en noteer deze.
+Het IP-adres is niet aan te passen in DHCP-mode. Wijzig deze mode niet, lees alleen de waarde van het IP-adres uit en noteer deze.
 Is het IP-adres 0.0.0.0 controleer dan de verbinding tussen de UR-robot en de router en reboot de UR-robot vervolgens.
 :::
 
@@ -83,34 +83,37 @@ Is het IP-adres 0.0.0.0 controleer dan de verbinding tussen de UR-robot en de ro
 Open op de teach-pendent van de UR-robot het programma `RosControl.urp`.
     • Gebruik de `Programma Laden` Functie
 
-![image](../images/ur2.png)
+![image](../images/ur-programm.jpg)
 
 Selecteer het tabblad `Installatie` en de functie `External Control`.
 
 Vul op de volgende gegevens in:
 * Host IP: 	Ip-adres van de development-computer
 * Custom port: 	50002
-* Host name:	Development
+* Host name:	Development(maakt niet uit wat je hier invult)
 
-![image](../images/ur3.png)
+![image](../images/ur-external-control.jpg)
 
-## Testen communicatie met uFactory Lite6 robot
+## Testen communicatie met UR robot robot
 Je kunt de communicatie met de robot testen met het volgende commando:
 ```bash
-ping <ip-address-robot>
+ping <robot_ip>
 ```
 
 Het resultaat moet dan hier op lijken
 ```text
-PING <ip-address-robot> (<ip-address-robot>) 56(84) bytes of data.
-64 bytes from <ip-address-robot>: icmp_seq=1 ttl=64 time=0.030 ms
-64 bytes from <ip-address-robot>: icmp_seq=2 ttl=64 time=0.041 ms
-64 bytes from <ip-address-robot>: icmp_seq=3 ttl=64 time=0.040 ms
+PING <robot_ip> (<robot_ip>) 56(84) bytes of data.
+64 bytes from <robot_ip>: icmp_seq=1 ttl=64 time=0.030 ms
+64 bytes from <robot_ip>: icmp_seq=2 ttl=64 time=0.041 ms
+64 bytes from <robot_ip>: icmp_seq=3 ttl=64 time=0.040 ms
 ^C
---- <ip-address-robot> ping statistics ---
+--- <robot_ip> ping statistics ---
 3 packets transmitted, 3 received, 0% packet loss, time 2069ms
 
 ```
+:::{caution}
+Voor een juiste configuratie dienen `PROFINET` en `Ethernet/IP` uit te staan. 
+:::
 
 ## Starten van de robot
 
@@ -122,7 +125,7 @@ Op de teach-pendent van de UR-robot:
 * Selecteer het programma `RosControl.urp`, zie hierboven.
 * Start het programma door op play te toetsen
 
-![image](../images/ur4.png)
+![image](../images/ur-programm.jpg)
 
 
 Volg de output in de terminal en evalueer of er een goede connectie met de robot tot stand is gekomen.
