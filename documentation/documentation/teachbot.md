@@ -10,7 +10,8 @@ Met de TOS-Teachbot kun je met een teleoperatie de joints van de UR robot bewege
 ## Voorbereidingen
 Instaleer de Techbot software vogends de [handleiding van Teachbot](https://avansmechatronica.github.io/teachbot/)
 
-## Starten van de UR-Robot
+## Native Teachbot ROS2 package
+### Starten van de UR-Robot
 
 Je kunt de teleoperatie op de robot zowel in simulatie als met een fysieke(Realworld) UR robot uitvoeren
 
@@ -48,7 +49,7 @@ Er wordt de Gazebo simulatie omgeving voor een UR5 robot geopend en een RVIZ mon
 
 :::::
 
-## Starten van de TOS-Teachbot
+### Starten van de TOS-Teachbot
 Ook de Teachbot kun ook in simulatie uitvoeren:
 :::::{card} 
 
@@ -76,8 +77,11 @@ ros2 launch teachbot_ros sim_teachbot_rviz.launch.py target_config_file:=~/teach
 
 :::::
 
-## Starten van de jointfollower
+### Starten van de jointfollower
 ```bash
 ros2 launch teachbot_follower follower_action.launch.py config_file:=~/teachbot_ws/src/teachbot_ros/teachbot_follower/config/ur.yaml
 ```
 Nadat je de Teachbot hebt ge-enabled zal de robot de bewegingen van de Teachbot in real-time volgen en uitvoeren.
+
+## Teachbot met LeRobot
+Je kunt ook de LeRobot software gebruiken om de Teachbot te bedienen. Volg hiervoor de [handleiding van LeRobot](https://github.com/AvansMechatronica/my_lerobot_ros)
