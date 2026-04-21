@@ -86,6 +86,7 @@ def generate_launch_description():
             description="Activate loaded joint controller.",
         )
     )
+    
 
     # Initialize Arguments
     robot_ip = LaunchConfiguration("robot_ip")
