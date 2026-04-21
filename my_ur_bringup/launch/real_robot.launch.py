@@ -75,9 +75,7 @@ def generate_launch_description():
             description="Initially loaded robot controller.",
             choices=[
                 "scaled_joint_trajectory_controller",
-                "joint_trajectory_controller",
-                "forward_velocity_controller",
-                "forward_position_controller",
+                "passthrough_trajectory_controller",
             ],
         )
     )
@@ -117,7 +115,7 @@ def generate_launch_description():
             ExecuteProcess(
                 cmd=[
                     'ros2', 'control', 'set_controller_state',
-                    'scaled_joint_trajectory_controller', 'active'
+                    initial_joint_controller, 'active'
                 ],
                 output='screen',
                 shell=False
@@ -126,5 +124,6 @@ def generate_launch_description():
     )
 
     return LaunchDescription(declared_arguments + [base_launch, activate_controller])
+    #return LaunchDescription(declared_arguments + [base_launch])
 
 
