@@ -46,3 +46,8 @@ fi
 
 #return to the original directory
 cd "$current_dir"
+
+# Set QT_QPA_PLATFORM to xcb
+if ! env | grep -q "QT_QPA_PLATFORM=xcb"; then
+    echo "export QT_QPA_PLATFORM=xcb" >> ~/.bashrc
+fi
