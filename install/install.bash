@@ -7,6 +7,12 @@ cd ../..
 # Update package lists
 sudo apt update
 
+# Install dependencies and build the workspace
+cd ..
+rosdep init
+rosdep update
+rosdep install --ignore-src --from-paths src -y
+
 # Check is the package "ros-$ROS_DISTRO-ur-robot-driver" is installed
 if dpkg -s ros-$ROS_DISTRO-ur-robot-driver &> /dev/null; then
     echo "Package ros-$ROS_DISTRO-ur-robot-driver is already installed."
@@ -24,10 +30,7 @@ else
     git clone -b $ROS_DISTRO https://github.com/UniversalRobots/Universal_Robots_ROS2_Description.git
 fi
 
-# Install dependencies and build the workspace
-cd ..
-rosdep update
-rosdep install --ignore-src --from-paths src -y
+
 
 # Build the workspace
 colcon build --symlink-install
