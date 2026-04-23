@@ -76,6 +76,7 @@ def generate_launch_description():
             choices=[
                 "scaled_joint_trajectory_controller",
                 "passthrough_trajectory_controller",
+                "forward_position_controller",
             ],
         )
     )
