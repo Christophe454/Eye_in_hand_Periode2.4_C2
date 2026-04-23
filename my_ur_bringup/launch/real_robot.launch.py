@@ -77,6 +77,7 @@ def generate_launch_description():
                 "scaled_joint_trajectory_controller",
                 "passthrough_trajectory_controller",
                 "forward_position_controller",
+                
             ],
         )
     )
