@@ -44,6 +44,8 @@ def launch_setup(context, *args, **kwargs):
     controllers_file = LaunchConfiguration("controllers_file")
     description_file = LaunchConfiguration("description_file")
     moveit_launch_file = LaunchConfiguration("moveit_launch_file")
+    initial_joint_controller = LaunchConfiguration("initial_joint_controller")
+    launch_servo = LaunchConfiguration("launch_servo")
 
     ur_control_launch = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
@@ -57,7 +59,7 @@ def launch_setup(context, *args, **kwargs):
             "controllers_file": controllers_file,
             "description_file": description_file,
             "launch_rviz": "false",
-            "initial_joint_controller": "joint_trajectory_controller",
+            "initial_joint_controller": initial_joint_controller,
         }.items(),
     )
 
@@ -67,6 +69,7 @@ def launch_setup(context, *args, **kwargs):
             "ur_type": ur_type,
             "use_sim_time": "true",
             "launch_rviz": "true",
+            "launch_servo": launch_servo,
             "sim": "true",
         }.items(),
     )
@@ -120,6 +123,20 @@ def generate_launch_description():
                 [FindPackageShare("my_ur_bringup"), "config", "ur_controllers.yaml"]
             ),
             description="Absolute path to YAML file with the controllers configuration.",
+        )
+    )
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "initial_joint_controller",
+            default_value="joint_trajectory_controller",
+            description="Robot controller to start.",
+        )
+    )
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "launch_servo",
+            default_value="false",
+            description="Launch Servo?",
         )
     )
     declared_arguments.append(
