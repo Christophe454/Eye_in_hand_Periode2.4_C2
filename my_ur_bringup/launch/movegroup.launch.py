@@ -213,7 +213,7 @@ def launch_setup(context, *args, **kwargs):
         output="screen",
     )
 
-    nodes_to_start = [move_group_node, rviz_node]
+    nodes_to_start = [move_group_node, rviz_node, servo_node]
 
     # Add delayed controller activation
     activate_controller = TimerAction(
@@ -351,9 +351,9 @@ def generate_launch_description():
     declared_arguments.append(
         DeclareLaunchArgument("sim", default_value="false", description="Use simulation controllers?")
     )
-    if 0:
-        declared_arguments.append(
-            DeclareLaunchArgument("launch_servo", default_value="false", description="Launch Servo?")
-        )
+
+    declared_arguments.append(
+        DeclareLaunchArgument("launch_servo", default_value="false", description="Launch Servo?")
+    )
 
     return LaunchDescription(declared_arguments + [OpaqueFunction(function=launch_setup)])
