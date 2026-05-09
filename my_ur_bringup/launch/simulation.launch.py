@@ -74,9 +74,18 @@ def launch_setup(context, *args, **kwargs):
         }.items(),
     )
 
+    ur_moveit_launch_servo = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            PathJoinSubstitution(
+                [FindPackageShare("my_ur_moveit_config"), "launch", "servo.launch.py"]
+            )
+        ),
+    )
+
     nodes_to_launch = [
         ur_control_launch,
-        ur_moveit_launch,
+        ur_moveit_launch_servo,
+        #ur_moveit_launch,
     ]
 
     return nodes_to_launch
