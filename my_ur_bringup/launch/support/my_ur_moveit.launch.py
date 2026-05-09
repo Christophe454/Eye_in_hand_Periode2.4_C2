@@ -126,6 +126,8 @@ def generate_launch_description():
         "warehouse_plugin": "warehouse_ros_sqlite::DatabaseConnection",
         "warehouse_host": warehouse_sqlite_path,
     }
+    kinematics_yaml = load_yaml("my_ur_moveit_config", "config/kinematics.yaml")
+    kinematics_params = {"robot_description_kinematics": kinematics_yaml}
 
     ld = LaunchDescription()
     ld.add_entity(declare_arguments())
@@ -143,6 +145,7 @@ def generate_launch_description():
         output="screen",
         parameters=[
             moveit_config.to_dict(),
+            kinematics_params,
             warehouse_ros_config,
             {
                 "use_sim_time": use_sim_time,
@@ -159,6 +162,7 @@ def generate_launch_description():
         executable="servo_node",
         parameters=[
             moveit_config.to_dict(),
+            kinematics_params,
             servo_params,
             {
                 "use_sim_time": use_sim_time,
