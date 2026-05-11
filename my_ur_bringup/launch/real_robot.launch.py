@@ -30,9 +30,9 @@
 # Author: Denis Stogl
 
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription, TimerAction, ExecuteProcess
+from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription
 from launch.launch_description_sources import PythonLaunchDescriptionSource
-from launch.substitutions import LaunchConfiguration, ThisLaunchFileDir
+from launch.substitutions import LaunchConfiguration
 from launch_ros.substitutions import FindPackageShare
 
 
@@ -111,22 +111,6 @@ def generate_launch_description():
         }.items(),
     )
 
-    # Ensure controller is activated after robot starts
-    activate_controller = TimerAction(
-        period=5.0,
-        actions=[
-            ExecuteProcess(
-                cmd=[
-                    'ros2', 'control', 'set_controller_state',
-                    initial_joint_controller, 'active'
-                ],
-                output='screen',
-                shell=False
-            )
-        ]
-    )
-
-    return LaunchDescription(declared_arguments + [base_launch, activate_controller])
-    #return LaunchDescription(declared_arguments + [base_launch])
+    return LaunchDescription(declared_arguments + [base_launch])
 
 
