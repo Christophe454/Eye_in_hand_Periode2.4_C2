@@ -1,0 +1,31 @@
+# ===== GOAL =====
+
+# Type beweging
+# "state"
+# "camera_pick"
+string mode
+
+# vaste positie
+string target_state
+
+# camera positie
+float64 target_x
+float64 target_y
+float64 target_z
+
+# snelheid
+float64 speed
+
+---
+
+# ===== RESULT =====
+
+bool success
+string message
+
+---
+
+# ===== FEEDBACK =====
+
+string current_state
+float64 progress

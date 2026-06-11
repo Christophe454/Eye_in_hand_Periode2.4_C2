@@ -1,2 +1,7 @@
 documentation/venv
 documentation/_build
+__pycache__/
+*.pyc
+build/
+install/
+log/
