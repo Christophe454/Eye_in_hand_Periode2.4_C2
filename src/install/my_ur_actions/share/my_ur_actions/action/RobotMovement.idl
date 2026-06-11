@@ -1,0 +1,65 @@
+// generated from rosidl_adapter/resource/action.idl.em
+// with input from my_ur_actions/action/RobotMovement.action
+// generated code does not contain a copyright notice
+
+
+module my_ur_actions {
+  module action {
+    @verbatim (language="comment", text=
+      "===== GOAL =====")
+    struct RobotMovement_Goal {
+      @verbatim (language="comment", text=
+        "Type beweging")
+      string mode;
+
+      @verbatim (language="comment", text=
+        "Voor vaste positie")
+      double target_x;
+
+      double target_y;
+
+      double target_z;
+
+      @verbatim (language="comment", text=
+        "Cameradoel gedetecteerd?")
+      boolean use_camera_target;
+
+      @verbatim (language="comment", text=
+        "Snelheid")
+      double speed;
+    };
+    struct RobotMovement_Result {
+      @verbatim (language="comment", text=
+        "===== RESULT =====")
+      boolean success;
+
+      string message;
+
+      @verbatim (language="comment", text=
+        "Eindpositie")
+      double final_x;
+
+      double final_y;
+
+      double final_z;
+    };
+    struct RobotMovement_Feedback {
+      @verbatim (language="comment", text=
+        "===== FEEDBACK =====" "\n"
+        "Huidige status")
+      string current_state;
+
+      @verbatim (language="comment", text=
+        "Huidige positie")
+      double current_x;
+
+      double current_y;
+
+      double current_z;
+
+      @verbatim (language="comment", text=
+        "Percentage gereed")
+      double progress;
+    };
+  };
+};
