@@ -1,0 +1,42 @@
+# ===== GOAL =====
+
+# Type beweging
+string mode
+
+# Voor vaste positie
+float64 target_x
+float64 target_y
+float64 target_z
+
+# Cameradoel gedetecteerd?
+bool use_camera_target
+
+# Snelheid
+float64 speed
+
+---
+
+# ===== RESULT =====
+
+bool success
+string message
+
+# Eindpositie
+float64 final_x
+float64 final_y
+float64 final_z
+
+---
+
+# ===== FEEDBACK =====
+
+# Huidige status
+string current_state
+
+# Huidige positie
+float64 current_x
+float64 current_y
+float64 current_z
+
+# Percentage gereed
+float64 progress
